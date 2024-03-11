@@ -24,3 +24,32 @@ dataSources:
         - event: Created(indexed address,indexed address,address)
           handler: handleCreated
       file: ./src/ep-proxy-factory.ts
+  - kind: ethereum
+    name: FactoryRegistry
+    network: fantom
+    source:
+      address: "0xF9A66F8C569D23f1fA1A63950c3CA822Cf26355e"
+      abi: FactoryRegistry
+      startBlock: 76946776
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - FactoryRegistryCreated
+        - Initialized
+        - OwnershipTransferred
+        - Upgraded
+      abis:
+        - name: FactoryRegistry
+          file: ./abis/FactoryRegistry.json
+      eventHandlers:
+        - event: Created(indexed address,indexed address,address,uint256)
+          handler: handleCreated
+        - event: Initialized(uint64)
+          handler: handleInitialized
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
+      file: ./src/factory-registry.ts

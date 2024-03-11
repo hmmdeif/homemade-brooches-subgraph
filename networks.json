@@ -3,6 +3,9 @@
     "EPProxyFactory": {
       "address": "0xEfB2bC11cb57db610FD8DA7bdd64E2B036d4dB32",
       "startBlock": 76946762
+    },
+    "FactoryRegistry": {
+      "address": "0xF9A66F8C569D23f1fA1A63950c3CA822Cf26355e"
     }
   }
 }
