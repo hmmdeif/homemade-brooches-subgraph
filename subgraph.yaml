@@ -1,0 +1,26 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: EPProxyFactory
+    network: fantom
+    source:
+      address: "0xEfB2bC11cb57db610FD8DA7bdd64E2B036d4dB32"
+      abi: EPProxyFactory
+      startBlock: 76946762
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Created
+      abis:
+        - name: EPProxyFactory
+          file: ./abis/EPProxyFactory.json
+      eventHandlers:
+        - event: Created(indexed address,indexed address,address)
+          handler: handleCreated
+      file: ./src/ep-proxy-factory.ts
