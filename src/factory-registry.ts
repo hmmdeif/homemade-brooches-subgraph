@@ -3,6 +3,7 @@ import {
   Initialized as InitializedEvent,
   OwnershipTransferred as OwnershipTransferredEvent,
   Upgraded as UpgradedEvent,
+  TransferProxyOwner as TransferProxyOwnerEvent,
 } from "../generated/FactoryRegistry/FactoryRegistry"
 import {
   FactoryRegistryCreated,
@@ -13,10 +14,26 @@ import {
 
 export function handleCreated(event: CreatedEvent): void {
   let entity = new FactoryRegistryCreated(
-    event.transaction.hash.concatI32(event.logIndex.toI32()),
+    event.params.proxy
   )
   entity.sender = event.params.sender
   entity.owner = event.params.owner
+  entity.proxy = event.params.proxy
+  entity.proxyId = event.params.proxyId
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handleTransfer(event: TransferProxyOwnerEvent): void {
+  let entity = new FactoryRegistryCreated(
+    event.params.proxy
+  )
+  entity.sender = event.params.owner
+  entity.owner = event.params.newOwner
   entity.proxy = event.params.proxy
   entity.proxyId = event.params.proxyId
 
