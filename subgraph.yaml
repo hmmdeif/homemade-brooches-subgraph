@@ -21,6 +21,8 @@ dataSources:
       abis:
         - name: EPProxyFactory
           file: ./abis/EPProxyFactory.json
+        - name: FactoryRegistry
+          file: ./abis/FactoryRegistry.json
       eventHandlers:
         - event: Created(indexed address,indexed address,address)
           handler: handleCreated

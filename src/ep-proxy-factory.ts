@@ -1,11 +1,10 @@
 import { BigInt, Bytes } from "@graphprotocol/graph-ts"
 import { Created as CreatedEvent } from "../generated/EPProxyFactory/EPProxyFactory"
+import { FactoryRegistry } from "../generated/FactoryRegistry/FactoryRegistry"
 import { Created } from "../generated/schema"
 import {
   FactoryRegistryCreated,
 } from "../generated/schema"
-
-let i = new BigInt(0)
 
 const ownerIndexes = [
   "0xAD0f62D1841529EA7442de3f967A42A8410a48dA", // 0
@@ -824,19 +823,20 @@ export function handleCreated(event: CreatedEvent): void {
 
   entity.save()
 
+  let contract = FactoryRegistry.bind(event.params.sender)
+  let addressCount = contract.totalAddressCount()
+
   let factoryEntity = new FactoryRegistryCreated(
-    event.transaction.hash.concatI32(event.logIndex.toI32()),
+    event.params.proxy,
   )
   factoryEntity.sender = event.params.sender
-  factoryEntity.owner = Bytes.fromHexString(ownerIndexes[i.toI32()])
+  factoryEntity.owner = Bytes.fromHexString(ownerIndexes[addressCount.minus(BigInt.fromI32(1)).toI32()])
   factoryEntity.proxy = event.params.proxy
-  factoryEntity.proxyId = i
+  factoryEntity.proxyId = addressCount.minus(BigInt.fromI32(1))
 
   factoryEntity.blockNumber = event.block.number
   factoryEntity.blockTimestamp = event.block.timestamp
   factoryEntity.transactionHash = event.transaction.hash
 
   factoryEntity.save()
-
-  i = i.plus(BigInt.fromI32(1))
 }
